@@ -46,4 +46,9 @@ if options.verbose:
 dbx.files_create_folder(destinationFolderName)
 
 # Upload files
+if options.verbose:
+    full_path = os.path.abspath(options.sourcefolder)
+    print "About to walk local folder \"" + options.sourcefolder  + "\", parsed as \"" + full_path + "\""
 
+for root_o, dir_o, files_o in os.walk(full_path, True, None, False):
+    pass
