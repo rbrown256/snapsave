@@ -51,4 +51,15 @@ if options.verbose:
     print "About to walk local folder \"" + options.sourcefolder  + "\", parsed as \"" + full_path + "\""
 
 for root_o, dir_o, files_o in os.walk(full_path, True, None, False):
-    pass
+    
+    remote_path = os.path.relpath(root_o, full_path)
+
+    if options.verbose:
+        print "Root path determined as \"" + root_o + "\""
+        print "Remote path is \"" + remote_path + "\"."
+
+    if remote_path != ".":
+        full_remote_path = "/" + options.destinationfolder + "/" + remote_path
+        if options.verbose:
+            print "About to create remote folder \"" + full_remote_path + "\""
+        dbx.files_create_folder(full_remote_path)
