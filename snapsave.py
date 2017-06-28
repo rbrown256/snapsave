@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import dropbox
+import os
 from optparse import OptionParser
 
 accessTokenFile = open("access_token.tkn", "r")
@@ -16,3 +17,9 @@ parser.add_option("-f", "--sourcefolder", dest="sourcefolder",
 
 if options.sourcefolder is None:
     parser.print_help()
+    exit()
+
+if os.path.isdir(options.sourcefolder):
+    pass
+else:
+    print "Path \"" + options.sourcefolder + "\" not found."
