@@ -14,4 +14,5 @@ parser.add_option("-f", "--sourcefolder", dest="sourcefolder",
 
 (options, args) = parser.parse_args()
 
-print accessToken
+if options.sourcefolder is None:
+    parser.print_help()
