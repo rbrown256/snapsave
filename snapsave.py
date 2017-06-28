@@ -30,13 +30,17 @@ if os.path.isdir(options.sourcefolder):
     if options.verbose:
         print "About to delete remote folder \"" + destinationFolderName  + "\""
     
-    dbx.files_delete(destinationFolderName)
-
+    try:
+        dbx.files_delete(destinationFolderName)
+    except dropbox.exceptions.ApiError:
+        if options.verbose:
+            print "API error (maybe folder doesn't exist)"
+    
     # Create remote folder
     if options.verbose:
         print "About to create remote folder \"" + destinationFolderName  + "\""
 
-    #dbx.files_create_folder(destinationFolderName)
+    dbx.files_create_folder(destinationFolderName)
     # Upload files
 else:
     print "Path \"" + options.sourcefolder + "\" not found."
