@@ -28,23 +28,23 @@ if not os.path.isdir(options.sourcefolder):
     exit()
 
 # Normalise this folder 
-destinationFolderName = "/" + options.destinationfolder
+destination_folder_name = "/" + options.destinationfolder
 
 # Delete remote folder
 if options.verbose:
-    print "About to delete remote folder \"" + destinationFolderName  + "\""
+    print "About to delete remote folder \"" + destination_folder_name  + "\""
 
 try:
-    dbx.files_delete(destinationFolderName)
+    dbx.files_delete(destination_folder_name)
 except dropbox.exceptions.ApiError:
     if options.verbose:
         print "API error (maybe folder doesn't exist)"
 
 # Create remote folder
 if options.verbose:
-    print "About to create remote folder \"" + destinationFolderName  + "\""
+    print "About to create remote folder \"" + destination_folder_name  + "\""
 
-dbx.files_create_folder(destinationFolderName)
+dbx.files_create_folder(destination_folder_name)
 
 # Upload files
 if options.verbose:
