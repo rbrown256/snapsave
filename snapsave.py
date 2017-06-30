@@ -65,20 +65,20 @@ for root_o, dir_o, files_o in os.walk(full_path, True, None, False):
             print "About to create remote folder \"" + full_remote_path + "\""
         dbx.files_create_folder(full_remote_path)
     else:
-        remote_path = full_remote_path = "/" + options.destinationfolder
+        full_remote_path = "/" + options.destinationfolder
 
     for file in files_o:
 
-        upload_path = full_path + "/" + file
-        file_remote_path = full_remote_path + "/" + file
+        local_file_path = root_o + "/" + file
+        upload_path = full_remote_path + "/" + file
 
         if options.verbose:
-            print "About to upload file \"" + upload_path + "\""
+            print "About to upload file \"" + local_file_path + "\" to Dropbox as \"" + upload_path + "\"."
 
-        upload_file = open(upload_path, "r")
+        upload_file = open(local_file_path, "r")
         upload_file_contents = upload_file.read()
         upload_file.close()
 
-        local_file_time = os.path.getmtime(upload_path)
+        local_file_time = os.path.getmtime(local_file_path)
 
-        dbx.files_upload(upload_file_contents, file_remote_path, mode=dropbox.files.WriteMode('overwrite', None), autorename=False, client_modified=datetime.fromtimestamp(local_file_time), mute=False)
+        dbx.files_upload(upload_file_contents, upload_path, mode=dropbox.files.WriteMode('overwrite', None), autorename=False, client_modified=datetime.fromtimestamp(local_file_time), mute=False)
