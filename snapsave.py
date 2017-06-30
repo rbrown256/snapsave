@@ -2,6 +2,7 @@
 import dropbox
 import os
 from optparse import OptionParser
+from datetime import datetime
 
 accessTokenFile = open("access_token.tkn", "r")
 accessToken = accessTokenFile.read()
@@ -63,3 +64,21 @@ for root_o, dir_o, files_o in os.walk(full_path, True, None, False):
         if options.verbose:
             print "About to create remote folder \"" + full_remote_path + "\""
         dbx.files_create_folder(full_remote_path)
+    else:
+        remote_path = full_remote_path = "/" + options.destinationfolder
+
+    for file in files_o:
+
+        upload_path = full_path + "/" + file
+        file_remote_path = full_remote_path + "/" + file
+
+        if options.verbose:
+            print "About to upload file \"" + upload_path + "\""
+
+        upload_file = open(upload_path, "r")
+        upload_file_contents = upload_file.read()
+        upload_file.close()
+
+        local_file_time = os.path.getmtime(upload_path)
+
+        dbx.files_upload(upload_file_contents, file_remote_path, mode=dropbox.files.WriteMode('overwrite', None), autorename=False, client_modified=datetime.fromtimestamp(local_file_time), mute=False)
