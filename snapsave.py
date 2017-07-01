@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# Copyright (c) 2017 Rob Brown. https://markitzeroday.com/ https://twitter.com/rb256
 import dropbox
 import os
 from optparse import OptionParser
