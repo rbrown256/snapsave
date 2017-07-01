@@ -4,7 +4,7 @@ import os
 from optparse import OptionParser
 from datetime import datetime
 
-accessTokenFile = open("access_token.tkn", "r")
+accessTokenFile = open(os.getcwd() + "/access_token.tkn", "r")
 accessToken = accessTokenFile.read()
 accessTokenFile.close()
 
