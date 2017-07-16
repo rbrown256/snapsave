@@ -78,12 +78,40 @@ for root_o, dir_o, files_o in os.walk(full_path, True, None, False):
         if options.verbose:
             print "About to upload file \"" + local_file_path + "\" to Dropbox as \"" + upload_path + "\"."
 
+        session_start_result = None
+
+        chunk_size = 157286400
+        offset = 0
+        uploaded = False
+
         with open(local_file_path, "r") as upload_file:
-            for chunk in iter(partial(upload_file.read, 157286400), ''):
-                upload_file_contents = chunk
-        
+            for chunk in iter(partial(upload_file.read, chunk_size), ''):
+                if not uploaded:
+                    uploaded = True
+                offset = upload_file.tell()
+                if options.verbose:
+                        print "Uploading offset " + str(offset)
+                if session_start_result is None:
+                    if options.verbose:
+                        print "Starting file"
+                    session_start_result = dbx.files_upload_session_start(chunk)
+                else:
+                    if options.verbose:
+                        print "Continuing file"
+                    dbx.files_upload_session_append(chunk, session_start_result.session_id, offset)
+
+
         upload_file.close()
 
         local_file_time = os.path.getmtime(local_file_path)
 
-        dbx.files_upload(upload_file_contents, upload_path, mode=dropbox.files.WriteMode('overwrite', None), autorename=False, client_modified=datetime.fromtimestamp(local_file_time), mute=False)
+        if uploaded:
+            if options.verbose:
+                print "Finishing session"
+            cursor = dropbox.files.UploadSessionCursor(session_start_result.session_id, offset)
+            commit = dropbox.files.CommitInfo(upload_path, mode=dropbox.files.WriteMode('overwrite', None), autorename=False, client_modified=datetime.fromtimestamp(local_file_time), mute=False)
+            dbx.files_upload_session_finish("", cursor, commit)
+        else:
+            if options.verbose:
+                print "Creating empty file"
+            dbx.files_upload("", upload_path, mode=dropbox.files.WriteMode('overwrite', None), autorename=False, client_modified=datetime.fromtimestamp(local_file_time), mute=False)
