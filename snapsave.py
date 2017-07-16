@@ -1,9 +1,10 @@
 #!/usr/bin/python
-# Copyright (c) 2017 Rob Brown. https://markitzeroday.com/ https://twitter.com/rb256
+# Copyright (c) 2017 Rob Brown. https://markitzeroday.com/ https://twitter.com/rb25
 import dropbox
 import os
 from optparse import OptionParser
 from datetime import datetime
+from functools import partial
 
 accessTokenFile = open(os.path.dirname(os.path.realpath(__file__)) + "/access_token.tkn", "r")
 accessToken = accessTokenFile.read()
@@ -77,8 +78,10 @@ for root_o, dir_o, files_o in os.walk(full_path, True, None, False):
         if options.verbose:
             print "About to upload file \"" + local_file_path + "\" to Dropbox as \"" + upload_path + "\"."
 
-        upload_file = open(local_file_path, "r")
-        upload_file_contents = upload_file.read()
+        with open(local_file_path, "r") as upload_file:
+            for chunk in iter(partial(upload_file.read, 157286400), ''):
+                upload_file_contents = chunk
+        
         upload_file.close()
 
         local_file_time = os.path.getmtime(local_file_path)
