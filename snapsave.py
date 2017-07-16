@@ -88,7 +88,6 @@ for root_o, dir_o, files_o in os.walk(full_path, True, None, False):
             for chunk in iter(partial(upload_file.read, chunk_size), ''):
                 if not uploaded:
                     uploaded = True
-                offset = upload_file.tell()
                 if options.verbose:
                         print "Uploading offset " + str(offset)
                 if session_start_result is None:
@@ -99,7 +98,7 @@ for root_o, dir_o, files_o in os.walk(full_path, True, None, False):
                     if options.verbose:
                         print "Continuing file"
                     dbx.files_upload_session_append(chunk, session_start_result.session_id, offset)
-
+                offset = upload_file.tell()
 
         upload_file.close()
 
