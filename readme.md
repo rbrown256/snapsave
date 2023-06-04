@@ -1,7 +1,28 @@
 snapsave
 ===
 
-Now updated to use Python3
+Python script to backup files and folders to Dropbox.
+
+# Example Usage
+
+Make a script like so:
+
+```
+#!/bin/bash
+mkdir -p /var/tmp/snapsave
+rm /var/tmp/snapsave/*.7z
+7za a -x'!var/tmp/snapsave' -mhe=on -p'secret-password' /var/tmp/snapsave/server.7z /opt /etc /home /root /var
+/root/.local/share/virtualenvs/snapsave-jmkwb-WP/bin/python /opt/snapsave/snapsave.py -s /var/tmp/snapsave/ -d my-server
+rm /var/tmp/snapsave/*.7z
+```
+
+Schedule this using `crontab -e`:
+
+`5 5 * * 1 /opt/snapsave/backup.sh >> /var/log/snapsave.log`
+
+# Updates
+
+- 2023-06-04: Updated to use Python3
 
 # Install
 ```
