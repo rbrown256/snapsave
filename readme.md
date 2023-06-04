@@ -27,6 +27,8 @@ Schedule this using `crontab -e`:
 # Install
 ```
 sudo apt install pipx
+pipx ensurepath
+bash
 pipx install pipenv
 git clone https://github.com/rbrown256/snapsave
 cd snapsave
