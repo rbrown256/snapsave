@@ -34,7 +34,6 @@ git clone https://github.com/rbrown256/snapsave
 cd snapsave
 pipenv install
 pipenv shell
-pip install dropbox
 touch access_token.tkn
 ```
 
