@@ -37,9 +37,8 @@ pipenv shell
 touch access_token.tkn
 ```
 
-Create an App at https://www.dropbox.com/developers/apps (App folder access only) and copy/paste the access token into `access_token.tkn`.
+Create an App at https://www.dropbox.com/developers/apps (App folder access only) and copy/paste the access token into `access_token.tkn`. As of 2024-04-21 it is still possible to create access tokens for your own account:
 
+> By generating an access token, you will be able to make API calls for your own account without going through the authorization flow. To obtain access tokens for other users, use the standard OAuth flow.
 
-# TODO
-
-- This code uses long lived access tokens, which are no longer possible to be generated using Dropbox developer portal, therefore I will need to update this to use refresh tokens.
+Do this from the settings page from your app on Dropbox. e.g. `https://www.dropbox.com/developers/apps/info/[App Key]#settings`
