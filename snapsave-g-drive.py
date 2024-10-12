@@ -18,6 +18,45 @@ credentials = service_account.Credentials.from_service_account_file(
 
 service = build('drive', 'v3', credentials=credentials)
 
+def delete_all_files(folder_id=None):
+    """Deletes all files in the specified folder or the entire Drive.
+    
+    Args:
+      folder_id: Optional. The ID of the folder to delete files from. 
+                 If None, it deletes all files in the entire Drive.
+    """
+    try:
+        # If folder_id is provided, list files only from that folder
+        if folder_id:
+            query = f"'{folder_id}' in parents and trashed = false"
+        else:
+            query = "trashed = false"
+
+        # List files in the Drive
+        results = service.files().list(q=query,
+                                        spaces='drive',
+                                        fields='nextPageToken, files(id, name)').execute()
+        items = results.get('files', [])
+
+        if not items:
+            print('No files found.')
+
+        else:
+            print('Deleting files:')
+            for item in items:
+                file_id = item['id']
+                service.files().delete(fileId=file_id).execute()
+                print(f'{item["name"]} ({item["id"]}) deleted.')
+
+        # Empty the recycle bin
+        service.files().emptyTrash().execute()
+        print('Recycle bin emptied.')
+
+    except HttpError as error:
+        print(f'An HTTP error occurred: {error}')
+    except Exception as error:
+        print(f'An error occurred: {error}')
+
 def upload_and_replace(source_file, destination_folder_id):
     """Uploads a file to Google Drive, replacing any existing file with the same name.
 
@@ -65,4 +104,5 @@ if __name__ == '__main__':
     parser.add_argument('-d', '--destination_folder_id', required=True, help='ID of the destination folder in Google Drive')
     args = parser.parse_args()
 
+    delete_all_files(args.destination_folder_id)
     upload_and_replace(args.source_file, args.destination_folder_id)
