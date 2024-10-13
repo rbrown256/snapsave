@@ -84,8 +84,26 @@ The `gdrive.json` file contains the authentication credentials your application 
 
 **5.  Set folder permissions:**
 
+As your service account will only have the default 15GB available to it (this is separate from your Google account), it is recommended to regularly move files shared with the service account to your
+own Google Drive. This will allow new uploads using Snapsave to successfully complete. This assumes you have more than the 15GB default available in your own Drive account.
+
+Recommended folder structure:
+
+```
+Google-Drive-Root
+    Snapsave
+      Inbox
+      Archive
+```
+
+Use [a script](https://gist.github.com/rbrown256/ff5b38058f3e53c59018a9dcbb50e80d) to regularly move files from `Inbox` to `Archive`, which will take ownership and return the quota to the service account:
+
+`copyAndDeleteFiles('<ID of Inbox>', '<ID of Archive>');`
+
+In [Google Apps Script](https://script.google.com/) set `main` to trigger e.g. every 15 minutes after adding your IDs to the `main()` function.
+
 * **In Google Drive, locate the specific folder you want your service account to access.**
-* Right-click on the folder and select "Share".
+* Right-click on the folder (`Inbox` in the example above) and select "Share".
 * In the "Share with people and groups" field, **enter the email address of your service account.** (You can find this email address on the Service Accounts page in the Cloud Console.)
 * **Choose the appropriate role:**
     * **Editor:**  Allows viewing, commenting, editing, and organizing files within the folder.
