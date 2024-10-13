@@ -122,6 +122,9 @@ In [Google Apps Script](https://script.google.com/) set `main` to trigger e.g. e
 *   **Secure Storage:** Store your `gdrive.json` file securely. Consider using environment variables or secret management services in production environments.
 *   **Rotation:** Regularly rotate your service account keys to minimize security risks.
 
+Note that `g-drive-browser.py` is provided to allow the Google Drive of the service account to be inspected, and files deleted. Simply run `g-drive-browser.py` with no args and it logs into
+Google Drive as the service account specified in `gdrive.json`.
+
 ## Dropbox
 
 Create an App at https://www.dropbox.com/developers/apps (App folder access only) and copy/paste the access token into `access_token.tkn`. As of 2024-04-21 it is still possible to create access tokens for your own account:
