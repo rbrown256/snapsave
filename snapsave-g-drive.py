@@ -3,6 +3,7 @@
 import argparse
 import mimetypes
 import os
+import time
 
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
@@ -80,6 +81,9 @@ def upload_and_replace(source_file, destination_folder_id):
             service.files().delete(fileId=file_id).execute()
             print(f'Existing file with ID {file_id} has been deleted.')
 
+        # Give time for server-side to reallocate quota
+        time.sleep(60)
+
         # Upload the file
         mimetype = mimetypes.guess_type(source_file)[0]
         file_metadata = {'name': filename, 'parents': [destination_folder_id]}
@@ -104,5 +108,5 @@ if __name__ == '__main__':
     parser.add_argument('-d', '--destination_folder_id', required=True, help='ID of the destination folder in Google Drive')
     args = parser.parse_args()
 
-    delete_all_files(args.destination_folder_id)
+    delete_all_files()
     upload_and_replace(args.source_file, args.destination_folder_id)
