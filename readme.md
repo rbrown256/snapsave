@@ -49,7 +49,10 @@ touch access_token.tkn gdrive.json
 ```
 ## Google Drive
 
-The `gdrive.json` file contains the authentication credentials your application needs to access the Google Drive API. Follow these steps to create it:
+The `gdrive.json` file contains the authentication credentials your application needs to access the Google Drive API.
+snapsave will use a service account that you setup. It will only have permission to access the folder you share with your service account.
+
+Follow these steps to create it:
 
 **1. Set up a Service Account**
 
@@ -96,11 +99,13 @@ Google-Drive-Root
       Archive
 ```
 
-Use [a script](https://gist.github.com/rbrown256/ff5b38058f3e53c59018a9dcbb50e80d) to regularly move files from `Inbox` to `Archive`, which will take ownership and return the quota to the service account:
+Use [this Google Apps Script](https://gist.github.com/rbrown256/ff5b38058f3e53c59018a9dcbb50e80d) to regularly move files from `Inbox` to `Archive`, which will take ownership and return the quota to the service account:
 
 `copyAndDeleteFiles('<ID of Inbox>', '<ID of Archive>');`
 
-In [Google Apps Script](https://script.google.com/) set `main` to trigger e.g. every 15 minutes after adding your IDs to the `main()` function.
+To find the ID navigate to the folder in the Web UI for Google Drive and check the URL: e.g. `https://drive.google.com/drive/folders/cokv1agzzrlkp5roq7bfug6bl04jvq51xe` gives the ID as `cokv1agzzrlkp5roq7bfug6bl04jvq51xe`.
+
+In [Google Apps Script](https://script.google.com/) click `New Script` then simply paste in the script from above. Set `main` to trigger e.g. every 15 minutes after adding your IDs to the `main()` function.
 
 * **In Google Drive, locate the specific folder you want your service account to access.**
 * Right-click on the folder (`Inbox` in the example above) and select "Share".
@@ -109,7 +114,7 @@ In [Google Apps Script](https://script.google.com/) set `main` to trigger e.g. e
     * **Editor:**  Allows viewing, commenting, editing, and organizing files within the folder.
 * Click "Send".
 * You will pass the ID of this folder (or one within it) to `snapsave-g-drive.py` using the `-d` parameter.
-* To find the ID navigate to the folder in the Web UI for Google Drive and see the URL: https://drive.google.com/drive/folders/cokv1agzzrlkp5roq7bfug6bl04jvq51xe
+* To find the ID navigate to the folder in the Web UI for Google Drive and check the URL: e.g. `https://drive.google.com/drive/folders/cokv1agzzrlkp5roq7bfug6bl04jvq51xe`
 * In this case, the ID is `cokv1agzzrlkp5roq7bfug6bl04jvq51xe`
 
 **6. Use the Credentials File**
