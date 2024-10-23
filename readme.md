@@ -105,7 +105,7 @@ Use [this Google Apps Script](https://gist.github.com/rbrown256/ff5b38058f3e53c5
 
 To find the ID navigate to the folder in the Web UI for Google Drive and check the URL: e.g. `https://drive.google.com/drive/folders/cokv1agzzrlkp5roq7bfug6bl04jvq51xe` gives the ID as `cokv1agzzrlkp5roq7bfug6bl04jvq51xe`.
 
-In [Google Apps Script](https://script.google.com/) click `New Script` then simply paste in the script from above. Set `main` to trigger e.g. every 15 minutes after adding your IDs to the `main()` function.
+In [Google Apps Script](https://script.google.com/) click `New Project` then simply paste in the script from above. Set `main` to trigger e.g. every 15 minutes after adding your IDs to the `main()` function.
 
 * **In Google Drive, locate the specific folder you want your service account to access.**
 * Right-click on the folder (`Inbox` in the example above) and select "Share".
