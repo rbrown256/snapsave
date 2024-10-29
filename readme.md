@@ -32,8 +32,8 @@ Schedule this using `crontab -e`:
 
 # Updates
 
-- 2023-06-04: Updated to use Python3
 - 2024-10-12: Added Google Drive script
+- 2023-06-04: Updated to use Python3
 
 # Install
 ```
