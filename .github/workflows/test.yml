@@ -25,13 +25,17 @@ jobs:
           # Create dummy Dropbox token for snapsave.py
           echo "dummy_dropbox_token_12345" > access_token.tkn
           
+          # Generate a structurally valid (but fake) 1024-bit RSA private key on the fly
+          # The awk command formats the output with literal \n characters required by JSON
+          DUMMY_KEY=$(openssl genrsa 1024 2>/dev/null | awk '{printf "%s\\n", $0}')
+          
           # Create dummy Google Service Account JSON for the g-drive scripts
           cat <<EOF > gdrive.json
           {
             "type": "service_account",
             "project_id": "dummy-project",
             "private_key_id": "dummy-key-id",
-            "private_key": "-----BEGIN PRIVATE KEY-----\nDummyKey\n-----END PRIVATE KEY-----\n",
+            "private_key": "$DUMMY_KEY",
             "client_email": "dummy@dummy-project.iam.gserviceaccount.com",
             "client_id": "1234567890",
             "auth_uri": "https://accounts.google.com/o/oauth2/auth",
